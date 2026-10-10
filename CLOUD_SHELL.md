@@ -63,19 +63,25 @@ Launch the ADK Dev UI server:
 ./scripts/cloud_shell_run.sh
 ```
 
+> ℹ️ **Origin & CORS Configuration:**  
+> The script automatically starts the server with:  
+> `adk web --host 0.0.0.0 --port 8080 --allow_origins 'regex:https://.*\.cloudshell\.dev' .`  
+> This allows the Cloud Shell Web Preview HTTPS domain (`https://*.cloudshell.dev`) to make session and chat POST requests without triggering `403 Forbidden` CORS errors.
+
 ### Accessing the Web Preview:
-1. Look at the top-right toolbar of Cloud Shell and click the **Web Preview** icon (looks like a screen with an eye: `[o]`).
+1. Look at the top-right toolbar of Cloud Shell and click the **Web Preview** icon (screen with an eye: `[o]`).
 2. Select **"Preview on port 8080"** (or click "Change port" $\rightarrow$ `8080` $\rightarrow$ "Change and Preview").
-3. A new browser tab will open with the **ADK Web UI**.
+3. A new browser tab will open with the **ADK Web UI** (`/dev-ui/`).
 4. In the top-left dropdown menu, select **`campus_buddy`**.
+5. Click **New session** or start chatting.
 
 ---
 
-## 5. Try the 4 Demo Queries
+## 5. Test the Core Scenarios
 
-Try sending these messages to Campus Buddy:
+Send these messages in the Web Preview chat to verify full agent capability:
 
-1. **Schedule & Canteen Query:**
+1. **Schedule & Canteen Query (Multi-Tool Call):**
    > *"What classes and food do I have on Friday?"*
    > *(Invokes `get_timetable` + `get_canteen_menu`)*
 
@@ -85,11 +91,11 @@ Try sending these messages to Campus Buddy:
 
 3. **Save Session Reminder:**
    > *"Remember to submit my lab record."*
-   > *(Invokes `add_reminder` and confirms storage in session state)*
+   > *(Invokes `add_reminder` and confirms in-session storage)*
 
 4. **Retrieve Reminders:**
    > *"What do I need to remember?"*
-   > *(Invokes `list_reminders` and lists saved items)*
+   > *(Invokes `list_reminders` and displays saved reminders)*
 
 ---
 
@@ -113,24 +119,21 @@ python -m google.adk.cli eval campus_buddy campus_buddy/campus_buddy_golden.eval
 
 ## 7. Stopping, Restarting & Pulling Updates
 
-### Stopping the Server
-Press **`Ctrl + C`** in the terminal where the server is running.
+### Step A: Stop the Running Server
+Press **`Ctrl + C`** in the terminal running the server.
 
-### Restarting the Server
-```bash
-./scripts/cloud_shell_run.sh
-```
-
-### Pulling Future Updates from GitHub
-To pull changes without losing your local `.env` configuration:
-```bash
-git pull origin main
-```
-If you made local edits in Cloud Shell, you can safely sync with:
+### Step B: Pull Latest Fixes Safely
+To pull updates from GitHub while preserving your local `.env` and any test files:
 ```bash
 git stash
 git pull origin main
 git stash pop
+```
+*(If you haven't made uncommitted code changes in Cloud Shell, a simple `git pull origin main` works directly since `.env` is ignored by Git.)*
+
+### Step C: Restart the Server
+```bash
+./scripts/cloud_shell_run.sh
 ```
 
 ---
@@ -146,4 +149,4 @@ git stash pop
    - If Cloud Shell disconnects due to 20+ minutes of inactivity or the terminal container restarts, active session state resets cleanly.
 3. **Cloud Run Deployment Status:**
    - Production Cloud Run deployment is currently **deferred** until a GCP billing account is activated.
-   - All Cloud Run deployment configurations remain preserved in [DEPLOYMENT.md](file:///Users/pritishdash/Library/Containers/net.whatsapp.WhatsApp/Data/tmp/documents/3ABDA648-2049-4A24-A008-5681AE7A8018/DEPLOYMENT.md) and [deploy_cloud_run.sh](file:///Users/pritishdash/Library/Containers/net.whatsapp.WhatsApp/Data/tmp/documents/3ABDA648-2049-4A24-A008-5681AE7A8018/deploy_cloud_run.sh) for future use.
+   - All Cloud Run deployment configurations remain preserved in [DEPLOYMENT.md](DEPLOYMENT.md) and [deploy_cloud_run.sh](deploy_cloud_run.sh) for future use.

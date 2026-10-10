@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ==============================================================================
 # Campus Buddy - Google Cloud Shell Server Runner
-# Runs the ADK Web Dev UI on 0.0.0.0:8080 (for Cloud Shell Web Preview).
+# Runs the ADK Web Dev UI on 0.0.0.0:8080 with Cloud Shell CORS origin allowed.
 # ==============================================================================
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -28,9 +28,11 @@ fi
 
 HOST="0.0.0.0"
 PORT="8080"
+ALLOWED_ORIGINS="regex:https://.*\.cloudshell\.dev"
 
 echo "===================================================================="
 echo "🚀 Starting Campus Buddy ADK Server on ${HOST}:${PORT}"
+echo "🌐 Allowed Origins: ${ALLOWED_ORIGINS}"
 echo "===================================================================="
 echo "👉 In Google Cloud Shell, click 'Web Preview' (top right icon)"
 echo "   and select 'Preview on port 8080'."
@@ -40,5 +42,9 @@ echo "   Press Ctrl+C to stop the server."
 echo "===================================================================="
 echo ""
 
-# Launch ADK Web Dev UI pointing to current directory (which contains campus_buddy package)
-exec adk web --host "${HOST}" --port "${PORT}" .
+# Launch ADK Web Dev UI with CORS support for Cloud Shell Web Preview
+exec adk web \
+  --host "${HOST}" \
+  --port "${PORT}" \
+  --allow_origins "${ALLOWED_ORIGINS}" \
+  .
