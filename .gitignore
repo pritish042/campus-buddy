@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# CPython and IDE directories
+.venv/
+env/
+venv/
+.env
+.env.*
+!.env.example
+campus_buddy/.env
+campus_buddy/.adk/
+.adk/
+.idea/
+.vscode/
+
+# Testing & Logs
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+adk_web.log
+
+# Operating System files
+.DS_Store
+Thumbs.db
